@@ -13,12 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class Order {
-    private int id;
+    private Integer id;
     private Date date;
     private double cost;
     private List<Product> products;
 
-    public Integer getId() {
-        return null;
-    }
 }

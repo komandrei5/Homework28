@@ -2,37 +2,45 @@ package app;
 
 import com.google.gson.Gson;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
+import java.util.List;
+
+import static java.lang.reflect.Array.get;
+import static spark.Spark.*;
 
 public class OrderController {
-        private static OrderRepository orderRepository = new OrderRepository();
-        private static Gson gson = new Gson();
+    public static void main(String[] args) {
+        final OrderRepository orderRepository = new OrderRepository() ;
 
-        public static void main(String[] args) {
-            port(8080);
+            // http://localhost:4567/orders
+            // Отримання всіх замовлень
+        get("/orders", (request, response) -> {
+            response.type("application/json");
+            List<Order> allOrders = orderRepository.getAllOrders();
+            return new Gson().toJson(allOrders);
+        });
 
-            // Endpoint to get a specific order by ID
-            get("/order/:id", (req, res) -> {
-                int id = Integer.parseInt(req.params(":id"));
-                Order order = orderRepository.getOrderById(id);
+            // http://localhost:4567/orders/:id
+            // Отримання конкретного замовлення за ID
+            get("/orders/:id", (request, response) -> {
+                response.type("application/json");
+                String orderId = request.params(":id");
+                Order order = orderRepository.getOrder(orderId);
                 if (order != null) {
-                    return gson.toJson(order);
+                    return new Gson().toJson(order);
                 } else {
-                    res.status(404);
-                    return "Order not found";
+                    response.status(404); // Not Found
+                    return new Gson().toJson(new StandardResponse(StatusResponse.ERROR, "Order not found"));
                 }
             });
-            // Endpoint to get all orders
-            get("/orders", (req, res) -> gson.toJson(orderRepository.getAllOrders()));
 
-            // Endpoint to add a new order
-            post("/order", (req, res) -> {
-                Order order = gson.fromJson(req.body(), Order.class);
-                orderRepository.addOrder(order);
-                res.status(201);
-                return "Order added successfully";
-            });
-        }
+        // http://localhost:4567/orders
+        // Додавання нового замовлення
+        post("/orders", (request, response) -> {
+            response.type("application/json");
+            Order newOrder = new Gson().fromJson(request.body(), Order.class);
+            orderRepository.addOrder(newOrder);
+            return new Gson().toJson(new StandardResponse(StatusResponse.SUCCESS, "Order added successfully"));
+        });
     }
+}
 

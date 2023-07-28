@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class Product {
-    private int id;
+    private Integer id;
     private String name;
     private double cost;
 }
