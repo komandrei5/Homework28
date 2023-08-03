@@ -1,16 +1,14 @@
 package app;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
+import java.util.UUID;
+
+@Getter
+@Setter
+@ToString
 public class Product {
-    private Integer id;
+    private UUID id;
     private String name;
     private double cost;
 }

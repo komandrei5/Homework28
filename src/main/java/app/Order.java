@@ -1,21 +1,20 @@
 package app;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import lombok.*;
 
-import java.util.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Accessors(chain = true)
+@Getter
+@Setter
+@ToString
 public class Order {
-    private Integer id;
-    private Date date;
+    private UUID id;
+    private Timestamp createAt;
+    private Timestamp updateAt;
     private double cost;
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
 }
