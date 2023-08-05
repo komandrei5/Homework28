@@ -46,6 +46,7 @@ public class OrderController {
            order.setCreateAt(new Timestamp(System.currentTimeMillis()));
            order.setUpdateAt(new Timestamp(System.currentTimeMillis()));
            order.getProducts().add(product);
+           order.setCost(order.getProducts().stream().mapToDouble(Product::getCost).sum());
 
            orderList.add(order);
            return new Gson().toJsonTree(order);
